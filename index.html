@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#103b42">
+<title>TrafficFlow | Traffic Congestion Guide</title>
+<style>
+:root{--ink:#17343a;--muted:#61757a;--green:#137c68;--bg:#f3f7f6;--line:#dce8e5;--red:#c34843;--amber:#b97a14;--blue:#346da4}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+header{background:linear-gradient(120deg,#103b42,#176c61);color:white;padding:24px max(18px,calc((100% - 1160px)/2));}
+.top{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}.logo{font-size:27px;font-weight:850;letter-spacing:-.8px}.logo span{color:#8ee3c5}.tag{font-size:12px;border:1px solid #ffffff4c;border-radius:999px;padding:6px 11px;color:#e4f6f0}
+header p{margin:7px 0 0;color:#d2e8e2;max-width:700px}
+main{max-width:1160px;margin:24px auto;padding:0 18px 38px}.intro{display:flex;justify-content:space-between;align-items:end;gap:18px;flex-wrap:wrap;margin-bottom:18px}h1{font-size:clamp(25px,4vw,34px);letter-spacing:-.8px;margin:0 0 5px}.sub{margin:0;color:var(--muted)}.updated{font-size:12px;color:var(--muted);background:#fff;border:1px solid var(--line);padding:8px 11px;border-radius:10px}
+.notice{display:flex;gap:10px;align-items:flex-start;padding:13px 15px;background:#fff5dc;border:1px solid #f0d99b;color:#6b5018;border-radius:12px;margin:16px 0 18px;font-size:13px}.notice strong{display:block;margin-bottom:2px}
+.panel{background:white;border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 4px 18px #1b4a3c08}.panel h2{font-size:18px;margin:0 0 4px}.hint{font-size:13px;color:var(--muted);margin:0 0 16px}
+.controls{display:grid;grid-template-columns:1.4fr 1fr 1fr auto;gap:13px;align-items:end}.field label{display:block;font-weight:700;font-size:13px;margin-bottom:6px}.field select,.field input{width:100%;height:44px;padding:0 12px;border:1px solid #cbdad6;border-radius:9px;background:white;color:var(--ink);font:inherit;outline:none}.field select:focus,.field input:focus{border-color:var(--green);box-shadow:0 0 0 3px #137c681c}
+button{font:inherit;font-weight:750;border:0;border-radius:9px;min-height:44px;padding:0 17px;background:var(--green);color:white;cursor:pointer}button:hover{filter:brightness(.95)}button:focus-visible{outline:3px solid #76cbb7;outline-offset:2px}.btn-light{background:#e8f3ef;color:#155b4f}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:15px 0}.metric{background:white;border:1px solid var(--line);border-radius:13px;padding:15px}.metric .label{font-size:12px;color:var(--muted);font-weight:650}.metric .value{font-size:25px;font-weight:850;letter-spacing:-.6px;margin:5px 0 1px}.metric .small{font-size:12px;color:var(--muted)}
+.two{display:grid;grid-template-columns:1.2fr .8fr;gap:15px}.area-list{display:grid;gap:10px}.area{border:1px solid var(--line);border-radius:11px;padding:13px 14px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center}.area.selected{border-color:#3c9b85;box-shadow:0 0 0 2px #137c6810;background:#fbfefd}.area-name{font-weight:750}.area-meta{font-size:12px;color:var(--muted);margin-top:2px}.right{text-align:right}.level{font-size:11px;font-weight:850;letter-spacing:.4px;border-radius:999px;padding:4px 8px;display:inline-block}.high{background:#ffebe9;color:#a32e2a}.moderate{background:#fff2d8;color:#80530b}.low{background:#e4f6ee;color:#14644d}.bar{height:7px;background:#eaf0ee;border-radius:99px;overflow:hidden;margin-top:9px}.bar span{display:block;height:100%;border-radius:99px}.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:15px 0}.detail{background:#f6faf8;border-radius:10px;padding:12px}.detail .k{font-size:12px;color:var(--muted)}.detail .v{font-weight:800;font-size:17px;margin-top:2px}.recommend{border-left:4px solid var(--green);background:#eef8f3;padding:13px;border-radius:0 10px 10px 0;font-size:14px}.recommend strong{display:block;margin-bottom:4px}.mini{font-size:12px;color:var(--muted);margin-top:12px}.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:13px}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}.footer{margin-top:17px;text-align:center;font-size:12px;color:var(--muted)}
+@media(max-width:850px){.controls{grid-template-columns:1fr 1fr}.controls button{width:100%}.two{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){main{padding:0 12px 28px}.panel{padding:15px}.controls{grid-template-columns:1fr}.metrics{gap:8px}.metric{padding:12px}.metric .value{font-size:22px}.area{padding:11px}.detail-grid{gap:8px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="top"><div><div class="logo">Traffic<span>Flow</span></div><div style="font-size:13px;color:#d2e8e2">Your simple traffic congestion guide</div></div><div class="tag">STUDENT PROJECT · DEMO DATA</div></div>
+  <p>Select an area and time to explore an illustrative traffic update, congestion level, and practical travel suggestions.</p>
+</header>
+<main>
+  <div class="intro"><div><h1>Traffic overview</h1><p class="sub">Check a location, compare nearby areas, and plan ahead.</p></div><div class="updated" id="updated">Demo updated: —</div></div>
+  <div class="notice"><span aria-hidden="true">ⓘ</span><div><strong>Important: sample information only</strong>This website is not connected to live traffic feeds, maps, cameras, GPS, or government systems. Area levels and time patterns are simulated for demonstration and must not be used as real-time traffic advice.</div></div>
+
+  <section class="panel" aria-labelledby="searchTitle">
+    <h2 id="searchTitle">Find traffic by area and time</h2><p class="hint">Choose one of the 10 example areas. Select a date and time to view the demo estimate.</p>
+    <div class="controls">
+      <div class="field"><label for="areaSelect">Select area</label><select id="areaSelect"></select></div>
+      <div class="field"><label for="dateSelect">Date</label><input id="dateSelect" type="date"></div>
+      <div class="field"><label for="timeSelect">Time</label><select id="timeSelect">
+        <option value="6">6:00 AM</option><option value="7">7:00 AM</option><option value="8">8:00 AM</option><option value="9">9:00 AM</option><option value="10">10:00 AM</option><option value="11">11:00 AM</option><option value="12">12:00 PM</option><option value="13">1:00 PM</option><option value="14">2:00 PM</option><option value="15">3:00 PM</option><option value="16">4:00 PM</option><option value="17">5:00 PM</option><option value="18">6:00 PM</option><option value="19">7:00 PM</option><option value="20">8:00 PM</option><option value="21">9:00 PM</option><option value="22">10:00 PM</option>
+      </select></div>
+      <button id="checkBtn" type="button">Check traffic</button>
+    </div>
+  </section>
+
+  <section class="metrics" aria-label="Selected area summary">
+    <div class="metric"><div class="label">Congestion level</div><div class="value" id="levelMetric">Moderate</div><div class="small">Simulated estimate</div></div>
+    <div class="metric"><div class="label">Congestion index</div><div class="value" id="indexMetric">—</div><div class="small">0–100 demo scale</div></div>
+    <div class="metric"><div class="label">Estimated speed</div><div class="value" id="speedMetric">—</div><div class="small">Illustrative only</div></div>
+    <div class="metric"><div class="label">Selected time</div><div class="value" id="timeMetric">—</div><div class="small" id="dateMetric">Selected date</div></div>
+  </section>
+
+  <div class="two">
+    <section class="panel">
+      <h2>Area comparison</h2><p class="hint">All 10 example areas for the selected time. Select any row to view its details.</p>
+      <div id="areaList" class="area-list" aria-live="polite"></div>
+      <div class="legend"><span><i class="dot" style="background:#c34843"></i>High: 70–100</span><span><i class="dot" style="background:#b97a14"></i>Moderate: 40–69</span><span><i class="dot" style="background:#137c68"></i>Low: 0–39</span></div>
+    </section>
+    <aside class="panel" aria-labelledby="detailTitle">
+      <h2 id="detailTitle">Selected area details</h2><p class="hint" id="detailSubtitle">Choose an area to see the demo summary.</p>
+      <div class="detail-grid">
+        <div class="detail"><div class="k">Typical condition</div><div class="v" id="condition">—</div></div>
+        <div class="detail"><div class="k">Estimated delay</div><div class="v" id="delay">—</div></div>
+        <div class="detail"><div class="k">Busy period</div><div class="v" id="busyPeriod">—</div></div>
+        <div class="detail"><div class="k">Data source</div><div class="v">Demo model</div></div>
+      </div>
+      <div class="recommend"><strong>Suggested next step</strong><span id="suggestion">Choose an area and time, then click “Check traffic”.</span></div>
+      <p class="mini">Suggestions are general examples, not live routing advice. Confirm road conditions through official local sources before travelling.</p>
+    </aside>
+  </div>
+  <div class="footer">TrafficFlow prototype · Simulated values only · Not for emergency response or traffic-signal control</div>
+</main>
+<script>
+const areas=[
+ {name:"Majestic Bus Stand",base:75,busy:"8–10 AM and 5–8 PM",type:"Transit hub"},
+ {name:"M.G. Road",base:68,busy:"9–11 AM and 5–7 PM",type:"Commercial area"},
+ {name:"Silk Board Junction",base:88,busy:"7–11 AM and 4–9 PM",type:"Major junction"},
+ {name:"Hebbal Junction",base:72,busy:"7–10 AM and 5–8 PM",type:"Junction"},
+ {name:"Whitefield Main Road",base:64,busy:"8–10 AM and 5–8 PM",type:"Employment corridor"},
+ {name:"Electronic City",base:70,busy:"7–10 AM and 4–8 PM",type:"Employment corridor"},
+ {name:"KR Market",base:67,busy:"7–11 AM and 4–7 PM",type:"Market area"},
+ {name:"Yeshwanthpur",base:57,busy:"8–10 AM and 5–7 PM",type:"Transit and market"},
+ {name:"Indiranagar 100 Feet Road",base:52,busy:"6–9 PM",type:"Commercial street"},
+ {name:"Nelamangala Town",base:42,busy:"8–10 AM and 5–7 PM",type:"Town centre"}
+];
+const $=id=>document.getElementById(id);
+const select=$("areaSelect");
+areas.forEach((a,i)=>{const o=document.createElement("option");o.value=i;o.textContent=a.name;select.appendChild(o)});
+function localDateString(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
+$("dateSelect").value=localDateString(new Date());
+function timeLabel(h){const ampm=h>=12?"PM":"AM";let hr=h%12;if(!hr)hr=12;return `${hr}:00 ${ampm}`}
+function congestion(area,h,date){
+ // Simulated rush-hour curve around morning/evening peaks; repeatable for selected area/date/time.
+ let peak=0;
+ if(h>=7&&h<=10)peak+=({7:10,8:20,9:23,10:12}[h]||0);
+ if(h>=16&&h<=20)peak+=({16:12,17:22,18:25,19:17,20:8}[h]||0);
+ if(h>=11&&h<=15)peak+=5;
+ if(h<=6||h>=21)peak-=15;
+ const ds=String(date||"").replaceAll("-","");
+ const seed=[...ds].reduce((s,c)=>s+c.charCodeAt(0),0)%9;
+ const idx=Math.max(10,Math.min(98,Math.round(area.base+peak-10+seed)));
+ return idx;
+}
+function levelFor(n){return n>=70?{label:"High",className:"high",color:"#c34843"}:n>=40?{label:"Moderate",className:"moderate",color:"#b97a14"}:{label:"Low",className:"low",color:"#137c68"}}
+function advice(level,h){
+ if(level==="High")return "This demo predicts heavier congestion for the selected period. If your journey is flexible, consider travelling outside the busy period. Check an official live traffic source before choosing a route.";
+ if(level==="Moderate")return "Allow some extra time in your plan. Check current road conditions and public transport options before leaving.";
+ return "The demo suggests comparatively lighter traffic for this time. Conditions can change; verify with an official live source before travelling.";
+}
+function render(){
+ const h=Number($("timeSelect").value),date=$("dateSelect").value||localDateString(new Date()),selected=Number(select.value||0);
+ const values=areas.map((a,i)=>({area:a,index:congestion(a,h,date),i})).sort((a,b)=>b.index-a.index);
+ const chosen=values.find(x=>x.i===selected)||values[0],level=levelFor(chosen.index);
+ $("levelMetric").textContent=level.label;$("levelMetric").style.color=level.color;
+ $("indexMetric").textContent=chosen.index+"/100";
+ $("speedMetric").textContent=Math.max(7,Math.round(58-chosen.index*.48))+" km/h";
+ $("timeMetric").textContent=timeLabel(h);$("dateMetric").textContent=date;
+ $("detailSubtitle").textContent=chosen.area.name+" · "+chosen.area.type;
+ $("condition").textContent=level.label;
+ $("delay").textContent=chosen.index>=70?"15–30 min":chosen.index>=40?"5–15 min":"0–5 min";
+ $("busyPeriod").textContent=chosen.area.busy;
+ $("suggestion").textContent=advice(level.label,h);
+ $("areaList").innerHTML=values.map(x=>{const l=levelFor(x.index);return `<button type="button" class="area ${x.i===selected?"selected":""}" data-area="${x.i}" style="text-align:left;background:${x.i===selected?"#fbfefd":"#fff"};color:var(--ink);width:100%;min-height:0"><div><div class="area-name">${x.area.name}</div><div class="area-meta">${x.area.type}</div><div class="bar"><span style="width:${x.index}%;background:${l.color}"></span></div></div><div class="right"><span class="level ${l.className}">${l.label}</span><div class="area-meta" style="margin-top:6px">${x.index}/100</div></div></button>`}).join("");
+ $("areaList").querySelectorAll("[data-area]").forEach(btn=>btn.addEventListener("click",()=>{select.value=btn.dataset.area;render()}));
+ $("updated").textContent="Demo refreshed: "+new Date().toLocaleTimeString([],{hour:"numeric",minute:"2-digit"});
+}
+$("checkBtn").addEventListener("click",render);select.addEventListener("change",render);$("timeSelect").addEventListener("change",render);$("dateSelect").addEventListener("change",render);
+render();
+</script>
+</body>
+</html>
